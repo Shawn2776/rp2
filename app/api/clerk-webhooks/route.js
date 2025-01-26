@@ -1,9 +1,17 @@
+import Cors from "nextjs-cors";
+
 import { Webhook } from "svix";
 import { query } from "@/lib/db";
 
 const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
 
 export async function POST(req) {
+  await Cors(req, new Response(), {
+    methods: ["GET", "POST", "OPTIONS"],
+    origin: "https://www.frienemies.com", // Allow your production domain
+    optionsSuccessStatus: 200,
+  });
+
   const payload = await req.text(); // Get raw body text
   const headers = Object.fromEntries(req.headers.entries());
 
